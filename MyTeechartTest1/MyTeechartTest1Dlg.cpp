@@ -115,9 +115,9 @@ BOOL CMyTeechartTest1Dlg::OnInitDialog()
 	((CAspect)m_Teechart1.get_Aspect()).put_Chart3DPercent(60);
 
 	////设置图表的标题（CTitles\CStrings）
-	//linTitle = (CTitles)m_Teechart1.get_Header();
-	//((CStrings)linTitle.get_Text()).Clear();
-	//((CStrings)linTitle.get_Text()).Add(COleVariant(_T("这是Title")));
+	linTitle = (CTitles)m_Teechart1.get_Header();
+	((CStrings)linTitle.get_Text()).Clear();
+	((CStrings)linTitle.get_Text()).Add(COleVariant(_T("")));
 
 	////隐藏图例
 	linLengend = (CLegend)m_Teechart1.get_Legend();
@@ -194,10 +194,11 @@ BOOL CMyTeechartTest1Dlg::OnInitDialog()
 	linSeries = ((CSeries)m_Teechart1.Series(0));
 	linSeries.put_Color(RGB(0,0,255));
 
-	((CPointer)((CPoint3DSeries)linSeries.get_asPoint3D()).get_Pointer()).put_Style(psDiamond);
+	((CPointer)((CPoint3DSeries)linSeries.get_asPoint3D()).get_Pointer()).put_Style(psStar);
 	((CPointer)((CPoint3DSeries)linSeries.get_asPoint3D()).get_Pointer()).put_Visible(TRUE);
-	((CPen0)((CPoint3DSeries)linSeries.get_asPoint3D()).get_Pen()).put_Color(RGB(134,67,99));
+	((CPen0)((CPoint3DSeries)linSeries.get_asPoint3D()).get_Pen()).put_Color(RGB(255,0,0));
 
+	/*
 	double r = 5;
 	for (double i=-r; i<=r; i+=0.1)
 	{
@@ -212,7 +213,20 @@ BOOL CMyTeechartTest1Dlg::OnInitDialog()
 			}		
 		}
 	}
+	*/
 
+	FILE *p = NULL;
+	float i,j,k;
+	p = fopen("1.txt","rb");
+	if (p)
+	{
+		while(-1 != fscanf(p,"%f %f %f",&i,&j,&k))
+		{
+			((CPoint3DSeries)linSeries.get_asPoint3D()).AddXYZ(i,j,k,NULL,RGB(255,0,0));
+		}
+		fclose(p);
+	}
+	
 	//for (int i=0; i<MAX_DATA_SIZE; i++)
 	//{
 	//	linSeries.AddXY(i+1, rand()%250, NULL, RGB(255,0,0));
